@@ -1,0 +1,20 @@
+body {
+    color: #373737;
+}
+
+h1 {
+    color: #C0B283;
+}
+
+.btn-regular {
+    background-color: #DCD0C0;
+    color: #373737;
+}
+
+.btn-regular:hover {
+    color: rgba(55,55,55, 0.5);
+}
+
+.jumbotron {
+    background-color: #f4f4f4;
+}
