@@ -2,10 +2,12 @@ var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var bodyParser = require('body-parser');
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/recipes");
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var recipeSchema = new Schema({
     title: String,
@@ -31,6 +33,11 @@ app.get("/recipes", function(req, res){
 
 app.get("/recipes/new", function(req, res){
     res.render("new");
+});
+
+app.post("/recipes", function(req, res){
+    console.log(req.body);
+    res.send(200);
 });
 
 app.listen(3000, function () {

@@ -22,3 +22,10 @@ h1 {
 #newFormContainer {
     width: 60%;
 }
+
+.btn {
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-color: #DCD0C0 !important;
+ }
