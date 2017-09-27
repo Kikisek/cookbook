@@ -18,3 +18,7 @@ h1 {
 .jumbotron {
     background-color: #f4f4f4;
 }
+
+#newFormContainer {
+    width: 60%;
+}
