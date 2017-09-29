@@ -19,22 +19,38 @@ h1 {
     background-color: #f4f4f4;
 }
 
-#newFormContainer {
-    width: 60%;
-}
-
 .btn {
     outline: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-color: #DCD0C0 !important;
- }
+}
 
- .card {
-     border-color: #DCD0C0;
- }
+.card {
+    border-color: #DCD0C0;
+}
 
- .fa-chevron-down {
-     display: block;
-     text-align: center;
- }
+.fa-chevron-down, .fa-chevron-up {
+    display: block;
+    text-align: center;
+}
+
+.hidden, .card-text {
+    display: none;
+}
+
+ul.card-text {
+    padding-left: 8%;
+}
+
+.card-body {
+    padding-bottom: 0;
+}
+
+#chevron-down, #chevron-up {
+    height: 2em;
+}
+
+#newFormContainer {
+width: 60%;
+}

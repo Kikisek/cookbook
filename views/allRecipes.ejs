@@ -19,7 +19,17 @@
                 <img class="card-img-top" src="<%= recipe.image %>">
                 <div class="card-body">
                     <h4 class="card-title"><%= recipe.title %></h4>
-                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                    <div id="chevron-down">
+                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </div>
+                    <ul class="card-text">
+                        <% recipe.ingredients.forEach(function(ingredient){ %>
+                        <li><%= ingredient.amount + " " + ingredient.unit + " " + ingredient.name %></li>
+                        <% }); %>
+                    </ul>
+                    <div id="chevron-up" class="hidden">
+                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </div>
                 </div>
             </div>
         <% }); %> 

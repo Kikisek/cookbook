@@ -59,14 +59,18 @@ app.listen(3000, function () {
   });
 
 function fake(count){
+    var units = ["g", "lb", "ml", "oz", "fl oz", "cup", "tbsp", "tsp", "pcs"];
     var fakeData = [];
     for (var i = 0; i <= count; i++){
         fakeData.push({
             title: faker.random.words(),
             image: faker.image.food() + "?t=" + Date.now(),
-            ingredients: {name: faker.random.word(),
+            ingredients: [{name: faker.random.word(),
                           amount: faker.random.number(),
-                          unit: faker.random.locale()},
+                          unit: units[Math.floor(Math.random()*units.length)]},
+                          {name: faker.random.word(),
+                          amount: faker.random.number(),
+                          unit: units[Math.floor(Math.random()*units.length)]}],
             directions: faker.lorem.paragraphs(),
             noOfServings: faker.random.number(),
             prepTime: faker.random.number(),
