@@ -29,3 +29,12 @@ h1 {
     box-shadow: none !important;
     border-color: #DCD0C0 !important;
  }
+
+ .card {
+     border-color: #DCD0C0;
+ }
+
+ .fa-chevron-down {
+     display: block;
+     text-align: center;
+ }

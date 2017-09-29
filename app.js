@@ -3,6 +3,7 @@ var app = express();
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var bodyParser = require('body-parser');
+var faker = require("faker");
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -28,7 +29,15 @@ app.get("/", function(req, res){
 });
 
 app.get("/recipes", function(req, res){
-    res.render("allRecipes");
+    // Recipe.find({}, function(err, recipes){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+    //         console.log(recipes);
+    //         res.render("allRecipes", {recipes: recipes});
+    //     }
+    // })
+    res.render("allRecipes", {recipes: fake(20)});
 });
 
 app.get("/recipes/new", function(req, res){
@@ -36,10 +45,33 @@ app.get("/recipes/new", function(req, res){
 });
 
 app.post("/recipes", function(req, res){
-    console.log(req.body);
-    res.send(200);
+    Recipe.create(req.body, function(err, recipe){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/recipes");
+        }
+    });
 });
 
 app.listen(3000, function () {
     console.log('Server has started');
   });
+
+function fake(count){
+    var fakeData = [];
+    for (var i = 0; i <= count; i++){
+        fakeData.push({
+            title: faker.random.words(),
+            image: faker.image.food() + "?t=" + Date.now(),
+            ingredients: {name: faker.random.word(),
+                          amount: faker.random.number(),
+                          unit: faker.random.locale()},
+            directions: faker.lorem.paragraphs(),
+            noOfServings: faker.random.number(),
+            prepTime: faker.random.number(),
+            cookingTime: faker.random.number()
+        });
+    }
+    return fakeData;
+}
