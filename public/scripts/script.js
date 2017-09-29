@@ -12,16 +12,18 @@ $(document).ready(function(){
             $(".ingredientsForm").find("select").val("g");
         }
     });
-    $("#recipesCardContainer").on("click", "#chevron-down", function(){
+    $("#recipesCardContainer").on("click", ".chevron", function(){
         $(this).siblings(".card-text").slideToggle(function(){
-            $(this).siblings("#chevron-up").toggleClass("hidden");
+            $(this).siblings(".chevron").children("i").toggleClass("fa-chevron-down");
+            $(this).siblings(".chevron").children("i").toggleClass("fa-chevron-up");
+            console.log($(this));
         });
-        $(this).toggleClass("hidden");
+        // $(this).toggleClass("hidden");
     });
-    $("#recipesCardContainer").on("click", "#chevron-up", function(){
-        $(this).siblings(".card-text").slideToggle(function(){
-            $(this).siblings("#chevron-down").toggleClass("hidden");
-        });
-        $(this).toggleClass("hidden");
-    });
+    // $("#recipesCardContainer").on("click", "#chevron-up", function(){
+    //     $(this).siblings(".card-text").slideToggle(function(){
+    //         $(this).siblings("#chevron-down").toggleClass("hidden");
+    //     });
+    //     $(this).toggleClass("hidden");
+    // });
 });
