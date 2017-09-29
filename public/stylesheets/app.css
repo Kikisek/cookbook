@@ -49,6 +49,7 @@ ul.card-text {
 
 #chevron-down, #chevron-up {
     height: 2em;
+    cursor: pointer;
 }
 
 #newFormContainer {

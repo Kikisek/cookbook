@@ -13,9 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var recipeSchema = new Schema({
     title: String,
     image: String,
-    ingredients: {name: String,
-                  amount: Number,
-                  unit: String},
+    ingredients: [
+        {name: String,
+         amount: Number,
+         unit: String}
+    ],
     directions: String,
     noOfServings: Number,
     prepTime: Number,
@@ -29,15 +31,15 @@ app.get("/", function(req, res){
 });
 
 app.get("/recipes", function(req, res){
-    // Recipe.find({}, function(err, recipes){
-    //     if(err){
-    //         console.log(err);
-    //     } else {
-    //         console.log(recipes);
-    //         res.render("allRecipes", {recipes: recipes});
-    //     }
-    // })
-    res.render("allRecipes", {recipes: fake(20)});
+    Recipe.find({}, function(err, recipes){
+        if(err){
+            console.log(err);
+        } else {
+            console.log(recipes);
+            res.render("allRecipes", {recipes: recipes});
+        }
+    })
+    // res.render("allRecipes", {recipes: fake(20)});
 });
 
 app.get("/recipes/new", function(req, res){
@@ -45,6 +47,17 @@ app.get("/recipes/new", function(req, res){
 });
 
 app.post("/recipes", function(req, res){
+    var ingredients = req.body.ingredients;
+    var modifiedIngredients = [];
+    for (var i = 0; i < ingredients.name.length; i++){
+        var obj = {
+            name: ingredients.name[i],
+            amount: ingredients.amount[i],
+            unit: ingredients.unit[i],
+        };
+        modifiedIngredients.push(obj);
+    }
+    req.body.ingredients = modifiedIngredients;
     Recipe.create(req.body, function(err, recipe){
         if(err){
             console.log(err);
