@@ -11,6 +11,10 @@ h1 {
     color: #373737;
 }
 
+.removeIngredientBtn {
+    background-color: rgba(220, 208, 192, 0.4)
+}
+
 .btn-regular:hover {
     color: rgba(55,55,55, 0.5);
 }
