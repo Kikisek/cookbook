@@ -4,11 +4,13 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var bodyParser = require('body-parser');
 var faker = require("faker");
+var methodOverride = require("method-override");
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/recipes");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 var recipeSchema = new Schema({
     title: String,
@@ -25,6 +27,19 @@ var recipeSchema = new Schema({
 });
 
 var Recipe = mongoose.model('Recipe', recipeSchema);
+
+function reshapeIngredients (ingredients) {
+    var modifiedIngredients = [];
+    for (var i = 0; i < ingredients.name.length; i++) {
+        var obj = {
+            name: ingredients.name[i],
+            amount: ingredients.amount[i],
+            unit: ingredients.unit[i],
+        };
+        modifiedIngredients.push(obj);
+    }
+    return modifiedIngredients;
+};
 
 app.get("/", function (req, res) {
     res.redirect("/recipes");
@@ -46,17 +61,7 @@ app.get("/recipes/new", function (req, res) {
 });
 
 app.post("/recipes", function (req, res) {
-    var ingredients = req.body.ingredients;
-    var modifiedIngredients = [];
-    for (var i = 0; i < ingredients.name.length; i++) {
-        var obj = {
-            name: ingredients.name[i],
-            amount: ingredients.amount[i],
-            unit: ingredients.unit[i],
-        };
-        modifiedIngredients.push(obj);
-    }
-    req.body.ingredients = modifiedIngredients;
+    req.body.ingredients = reshapeIngredients(req.body.ingredients);
     Recipe.create(req.body, function (err, recipe) {
         if (err) {
             console.log(err);
@@ -84,7 +89,18 @@ app.get("/recipes/:id/edit", function (req, res) {
             res.render("edit", {recipe: foundRecipe,
                                 edit: true});
         }
-    })
+    });
+});
+
+app.put("/recipes/:id", function (req, res) {
+    req.body.ingredients = reshapeIngredients(req.body.ingredients);
+    Recipe.findByIdAndUpdate(req.params.id, req.body, function (err, updatedRecipe) {
+        if (err) {
+            res.send("error" + err);
+        } else {
+            res.redirect("/recipes/" + req.params.id);
+        }
+    });
 });
 
 app.listen(3000, function () {

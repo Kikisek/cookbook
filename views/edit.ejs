@@ -7,7 +7,7 @@
     <% } else { %>
         <h1>Add Recipe</h1>
     <% } %>    
-    <form action="/recipes/<%= edit ? recipe._id : '' %>" method="POST" id="add-form">
+    <form action="/recipes/<%= edit ? recipe._id + '?_method=PUT' : '' %>" method="POST" id="add-form">
         <!-- TITLE -->
         <div class="form-group mt-3">
             <label class="form-control-label" for="title">Title</label>
