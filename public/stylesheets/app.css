@@ -73,6 +73,10 @@ ul.card-text {
     border-radius: 2%;
 }
 
+.prep-times {
+    width: 60%;
+}
+
 #new-form-container {
     width: 60%;
 }
@@ -88,6 +92,7 @@ ul.card-text {
 
 #recipe-title {
     margin-bottom: 3%;
+    color: #C0B283;
 }
 
 #no-of-servings {

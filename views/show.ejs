@@ -1,0 +1,31 @@
+<% include ./partials/header.ejs %>
+
+<div class="container" id="show-recipe-container">
+    <h3 id="recipe-title"><%= recipe.title %></h3>
+    <div class="row" id="basic-info">
+        <div class="col col-md-6 col-sm-12">
+            <img class="recipe-image" src="<%= recipe.image %>">
+        </div>
+        <div class="col col-md-6 col-sm-12 mt-auto">
+            <p class="prep-times"><span class="font-weight-bold">Preparation:</span><span class="float-right"><%= recipe.prepTime %> min</span></p>
+            <p class="prep-times"><span class="font-weight-bold">Cooking:</span><span class="float-right"><%= recipe.cookingTime %> min</span></p>
+            <p class="mb-0 prep-times"><span class="font-weight-bold">Number of Servings:</span><span class="float-right"><input type="number" id="no-of-servings" value="<%= recipe.servings %>"></span></p>
+        </div>
+    </div>
+    <hr>
+    <div class="ingredients">
+        <% recipe.ingredients.forEach (function(ingredient) { %>
+            <p class="ingredient mb-1"><span class="font-weight-bold"><%= ingredient.amount %></span><%= " " + ingredient.unit + " " + ingredient.name %></p>
+        <% }); %>
+    </div>
+    <hr>
+    <div class="directions">
+        <p class="direction"><%- recipe.directions %></p>
+    </div>
+        <a href="/recipes/<%= recipe._id %>/edit" class="btn btn-regular">Edit</a>
+        <a href="/recipes" class="btn btn-regular">Back</a>
+        <a href="/recipes" class="btn btn-regular">Delete</a>
+    
+</div>
+
+<% include ./partials/footer.ejs %>

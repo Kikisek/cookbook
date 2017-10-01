@@ -59,24 +59,24 @@
         <!-- DIRECTIONS -->
         <div class="form-group">
             <label class="form-control-label" for="directions">Directions</label>
-            <textarea class="form-control" id="directions" name="directions" rows="3"><% edit ? recipe.directions : '' %></textarea>
+            <textarea class="form-control" id="directions" name="directions" rows="3"><%= edit ? recipe.directions : '' %></textarea>
         </div>
         <!-- ADDITIONAL INFO ROW -->
         <div class="form-row">
             <!-- SERVINGS -->
             <div class="form-group col-md-4">
                 <label class="form-control-label" for="servings">Number of servings</label>
-                <input type="number" class="form-control" id="servings" name="servings" value="<%= edit ? recipe.servings : 0 %>">
+                <input type="number" class="form-control" id="servings" name="servings" value="<%= edit ? recipe.servings : 0 %>" placeholder="4">
             </div>
             <!-- PREPTIME -->
             <div class="form-group col-md-4">              
                 <label class="form-control-label" for="prepTime">Preparation Time (min)</label>
-                <input type="number" class="form-control" id="prepTime" name="prepTime" value="<%= edit ? recipe.prepTime : 0 %>">
+                <input type="number" class="form-control" id="prepTime" name="prepTime" value="<%= edit ? recipe.prepTime : 0 %>" placeholder="15">
             </div>
             <!-- COOKING TIME -->
             <div class="form-group col-md-4">
                 <label class="form-control-label" for="cookingTime">Cooking Time (min)</label>
-                <input type="number" class="form-control" id="cookingTime" name="cookingTime" value="<%= edit ? recipe.cookingTime : 0 %>">
+                <input type="number" class="form-control" id="cookingTime" name="cookingTime" value="<%= edit ? recipe.cookingTime : 0 %>" placeholder="30">
             </div>
         </div>
         <!-- SUBMIT BUTTON -->
