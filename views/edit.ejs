@@ -1,0 +1,87 @@
+<% include ./partials/header %>
+
+
+<div class="container mt-5" id="new-form-container">
+    <% if (edit) { %>
+        <h1>Edit Recipe</h1>
+    <% } else { %>
+        <h1>Add Recipe</h1>
+    <% } %>    
+    <form action="/recipes/<%= edit ? recipe._id : '' %>" method="POST" id="add-form">
+        <!-- TITLE -->
+        <div class="form-group mt-3">
+            <label class="form-control-label" for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="<%= edit ? recipe.title : '' %>" placeholder="Spaghetti">
+        </div>
+        <!-- IMAGE -->
+        <div class="form-group">
+            <label class="form-control-label" for="image">Image</label>
+            <input type="url" class="form-control" id="image" name="image" value="<%= edit ? recipe.image : '' %>" placeholder="Image url">
+        </div>
+        <!-- LABELS FOR INGREDIENTS -->
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                <label class="form-control-label">Ingredient</label>
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                <label class="form-control-label">Amount</label>
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                <label class="form-control-label">Unit</label>
+            </div>
+        </div>
+        <!-- FILL IN THE INGREDIENTS -->
+        <% var ingredients = edit ? recipe.ingredients : [{name: '', amount: '', unit: ''}] %>
+        <% for (ingredient of ingredients) { %>
+            <div class="form-row ingredients-form">
+                <!-- NAME -->
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="ingredients[name]" value="<%= ingredient.name %>" placeholder="ketchup">
+                </div>
+                <!-- AMOUNT -->
+                <div class="form-group col-md-3">
+                    <input type="number" step="0.01" class="form-control" name="ingredients[amount]" value="<%= ingredient.amount %>" placeholder="150">
+                </div>
+                <!-- UNIT -->
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="ingredients[unit]" value="<%= ingredient.unit %>" placeholder="g">
+                </div>
+                <!-- REMOVE BUTTON -->
+                <div class="form-group col-md-3 pl-4">           
+                    <button type="button" class="form-control btn btn-regular remove-ingredient-btn">Remove</button>
+                </div>
+            </div>
+        <% } %>
+        <!-- ADD BUTTON -->
+        <div class="form-group col-md-2 pl-0">  
+                <button type="button" class="form-control btn btn-regular" id="add-ingredient-btn">Add</button>
+        </div>
+        <!-- DIRECTIONS -->
+        <div class="form-group">
+            <label class="form-control-label" for="directions">Directions</label>
+            <textarea class="form-control" id="directions" name="directions" rows="3"><% edit ? recipe.directions : '' %></textarea>
+        </div>
+        <!-- ADDITIONAL INFO ROW -->
+        <div class="form-row">
+            <!-- SERVINGS -->
+            <div class="form-group col-md-4">
+                <label class="form-control-label" for="servings">Number of servings</label>
+                <input type="number" class="form-control" id="servings" name="servings" value="<%= edit ? recipe.servings : 0 %>">
+            </div>
+            <!-- PREPTIME -->
+            <div class="form-group col-md-4">              
+                <label class="form-control-label" for="prepTime">Preparation Time (min)</label>
+                <input type="number" class="form-control" id="prepTime" name="prepTime" value="<%= edit ? recipe.prepTime : 0 %>">
+            </div>
+            <!-- COOKING TIME -->
+            <div class="form-group col-md-4">
+                <label class="form-control-label" for="cookingTime">Cooking Time (min)</label>
+                <input type="number" class="form-control" id="cookingTime" name="cookingTime" value="<%= edit ? recipe.cookingTime : 0 %>">
+            </div>
+        </div>
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" class="btn btn-regular">Submit</button>
+    </form>
+</div>
+
+<% include ./partials/footer %>

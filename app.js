@@ -19,18 +19,18 @@ var recipeSchema = new Schema({
          unit: String}
     ],
     directions: String,
-    noOfServings: Number,
+    servings: Number,
     prepTime: Number,
     cookingTime: Number
 });
 
 var Recipe = mongoose.model('Recipe', recipeSchema);
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
     res.redirect("/recipes");
 });
 
-app.get("/recipes", function(req, res){
+app.get("/recipes", function (req, res) {
     Recipe.find({}, function(err, recipes){
         if(err){
             console.log(err);
@@ -41,14 +41,14 @@ app.get("/recipes", function(req, res){
     // res.render("allRecipes", {recipes: fake(20)});
 });
 
-app.get("/recipes/new", function(req, res){
-    res.render("new");
+app.get("/recipes/new", function (req, res) {
+    res.render("edit", {edit: false});
 });
 
-app.post("/recipes", function(req, res){
+app.post("/recipes", function (req, res) {
     var ingredients = req.body.ingredients;
     var modifiedIngredients = [];
-    for (var i = 0; i < ingredients.name.length; i++){
+    for (var i = 0; i < ingredients.name.length; i++) {
         var obj = {
             name: ingredients.name[i],
             amount: ingredients.amount[i],
@@ -57,13 +57,34 @@ app.post("/recipes", function(req, res){
         modifiedIngredients.push(obj);
     }
     req.body.ingredients = modifiedIngredients;
-    Recipe.create(req.body, function(err, recipe){
-        if(err){
+    Recipe.create(req.body, function (err, recipe) {
+        if (err) {
             console.log(err);
         } else {
             res.redirect("/recipes");
         }
     });
+});
+
+app.get("/recipes/:id", function (req, res) {
+    Recipe.findById(req.params.id, function (err, foundRecipe) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("show", {recipe: foundRecipe});
+        }
+    });
+});
+
+app.get("/recipes/:id/edit", function (req, res) {
+    Recipe.findById(req.params.id, function (err, foundRecipe) {
+        if (err) {
+            console.log (err);
+        } else {
+            res.render("edit", {recipe: foundRecipe,
+                                edit: true});
+        }
+    })
 });
 
 app.listen(3000, function () {
@@ -82,9 +103,12 @@ function fake(count){
                           unit: units[Math.floor(Math.random()*units.length)]},
                           {name: faker.random.word(),
                           amount: faker.random.number(),
+                          unit: units[Math.floor(Math.random()*units.length)]},
+                          {name: faker.random.word(),
+                          amount: faker.random.number(),
                           unit: units[Math.floor(Math.random()*units.length)]}],
             directions: faker.lorem.paragraphs(),
-            noOfServings: faker.random.number(),
+            servings: faker.random.number(),
             prepTime: faker.random.number(),
             cookingTime: faker.random.number()
         });

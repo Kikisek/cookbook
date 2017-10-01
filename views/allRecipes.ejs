@@ -12,13 +12,13 @@
     </div>
 </div>
 
-<div class="container" id="recipesCardContainer">
+<div class="container" id="recipes-card-container">
     <div class="grid card-columns">
         <% recipes.forEach(function(recipe){ %>
             <div class="card">
-                <img class="card-img-top" src="<%= recipe.image %>">
+                <a href="/recipes/<%= recipe._id %>"><img class="card-img-top" src="<%= recipe.image %>"></a>
                 <div class="card-body">
-                    <h4 class="card-title"><%= recipe.title %></h4>
+                    <a href="/recipes/<%= recipe._id %>"><h4 class="card-title"><%= recipe.title %></h4></a>
                     <ul class="card-text">
                         <% for (var i = 0; i < recipe.ingredients.length; i++){ %>
                         <li><%= recipe.ingredients[i].amount + " " + recipe.ingredients[i].unit + " " + recipe.ingredients[i].name %></li>
