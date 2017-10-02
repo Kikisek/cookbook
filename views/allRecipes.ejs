@@ -20,8 +20,12 @@
                 <div class="card-body">
                     <a href="/recipes/<%= recipe._id %>"><h4 class="card-title"><%= recipe.title %></h4></a>
                     <ul class="card-text">
-                        <% for (var i = 0; i < recipe.ingredients.length; i++){ %>
-                        <li><%= recipe.ingredients[i].amount + " " + recipe.ingredients[i].unit + " " + recipe.ingredients[i].name %></li>
+                        <% for (var i = 0; i < recipe.ingredients.length; i++) { %>
+                            <% if (recipe.ingredients[i].amount == null) { %>
+                                <li><%= recipe.ingredients[i].name %></li>
+                            <% } else { %>
+                                <li><%= recipe.ingredients[i].amount  + " " + recipe.ingredients[i].unit + " " + recipe.ingredients[i].name %></li>
+                            <% }; %>
                         <% }; %>
                     </ul>
                     <div class="chevron">

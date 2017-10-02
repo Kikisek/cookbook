@@ -20,7 +20,11 @@
     </div>
     <hr>
     <div class="directions">
-        <p class="direction"><%- recipe.directions %></p>
+        <% for (var i =0; i < recipe.directions.length; i++) { %>
+            <div>
+                <p class="direction"><%= i + 1 + '. ' + recipe.directions[i] %></p>
+            </div>
+        <% }; %>
     </div>
         <a href="/recipes/<%= recipe._id %>/edit" class="btn btn-regular">Edit</a>
         <a href="/recipes" class="btn btn-regular">Back</a>

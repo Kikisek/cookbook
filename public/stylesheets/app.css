@@ -23,12 +23,13 @@ hr {
     color: #373737;
 }
 
-.remove-ingredient-btn {
+.remove-ingredient-btn,
+.remove-direction-btn {
     background-color: rgba(220, 208, 192, 0.4)
 }
 
 .btn-regular:hover {
-    color: rgba(55,55,55, 0.5);
+    color: rgba(55, 55, 55, 0.5);
 }
 
 .jumbotron {
@@ -74,7 +75,7 @@ ul.card-text {
 }
 
 .prep-times {
-    width: 60%;
+    width: 65%;
 }
 
 #new-form-container {
@@ -85,7 +86,7 @@ ul.card-text {
     margin: 3% auto;
     padding: 3%;
     border-radius: 2%;
-    width: 70%;
+    width: 60%;
     border: solid 1px #DCD0C0;
     background-color: rgba(244, 244, 244, 0.3);
 }

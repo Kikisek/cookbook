@@ -16,11 +16,13 @@ var recipeSchema = new Schema({
     title: String,
     image: String,
     ingredients: [
-        {name: String,
-         amount: Number,
-         unit: String}
+        {
+            name: String,
+            amount: Number,
+            unit: String
+        }
     ],
-    directions: String,
+    directions: [String],
     servings: Number,
     prepTime: Number,
     cookingTime: Number
@@ -28,7 +30,7 @@ var recipeSchema = new Schema({
 
 var Recipe = mongoose.model('Recipe', recipeSchema);
 
-function reshapeIngredients (ingredients) {
+function reshapeIngredients(ingredients) {
     var modifiedIngredients = [];
     for (var i = 0; i < ingredients.name.length; i++) {
         var obj = {
@@ -46,18 +48,18 @@ app.get("/", function (req, res) {
 });
 
 app.get("/recipes", function (req, res) {
-    Recipe.find({}, function(err, recipes){
-        if(err){
+    Recipe.find({}, function (err, recipes) {
+        if (err) {
             console.log(err);
         } else {
-            res.render("allRecipes", {recipes: recipes});
+            res.render("allRecipes", { recipes: recipes });
         }
     })
     // res.render("allRecipes", {recipes: fake(20)});
 });
 
 app.get("/recipes/new", function (req, res) {
-    res.render("edit", {edit: false});
+    res.render("edit", { edit: false });
 });
 
 app.post("/recipes", function (req, res) {
@@ -76,7 +78,7 @@ app.get("/recipes/:id", function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("show", {recipe: foundRecipe});
+            res.render("show", { recipe: foundRecipe });
         }
     });
 });
@@ -84,10 +86,12 @@ app.get("/recipes/:id", function (req, res) {
 app.get("/recipes/:id/edit", function (req, res) {
     Recipe.findById(req.params.id, function (err, foundRecipe) {
         if (err) {
-            console.log (err);
+            console.log(err);
         } else {
-            res.render("edit", {recipe: foundRecipe,
-                                edit: true});
+            res.render("edit", {
+                recipe: foundRecipe,
+                edit: true
+            });
         }
     });
 });
@@ -105,24 +109,30 @@ app.put("/recipes/:id", function (req, res) {
 
 app.listen(3000, function () {
     console.log('Server has started');
-  });
+});
 
-function fake(count){
+function fake(count) {
     var units = ["g", "lb", "ml", "oz", "fl oz", "cup", "tbsp", "tsp", "pcs"];
     var fakeData = [];
-    for (var i = 0; i <= count; i++){
+    for (var i = 0; i <= count; i++) {
         fakeData.push({
             title: faker.random.words(),
             image: faker.image.food() + "?t=" + Date.now(),
-            ingredients: [{name: faker.random.word(),
-                          amount: faker.random.number(),
-                          unit: units[Math.floor(Math.random()*units.length)]},
-                          {name: faker.random.word(),
-                          amount: faker.random.number(),
-                          unit: units[Math.floor(Math.random()*units.length)]},
-                          {name: faker.random.word(),
-                          amount: faker.random.number(),
-                          unit: units[Math.floor(Math.random()*units.length)]}],
+            ingredients: [{
+                name: faker.random.word(),
+                amount: faker.random.number(),
+                unit: units[Math.floor(Math.random() * units.length)]
+            },
+            {
+                name: faker.random.word(),
+                amount: faker.random.number(),
+                unit: units[Math.floor(Math.random() * units.length)]
+            },
+            {
+                name: faker.random.word(),
+                amount: faker.random.number(),
+                unit: units[Math.floor(Math.random() * units.length)]
+            }],
             directions: faker.lorem.paragraphs(),
             servings: faker.random.number(),
             prepTime: faker.random.number(),
