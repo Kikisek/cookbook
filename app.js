@@ -3,7 +3,7 @@ var app = express();
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var bodyParser = require('body-parser');
-var faker = require("faker");
+// var faker = require("faker");
 var methodOverride = require("method-override");
 
 app.set("view engine", "ejs");
