@@ -8,8 +8,10 @@ var methodOverride = require("method-override");
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-// mongoose.connect("mongodb://localhost/recipes");
-mongoose.connect("mongodb://cook:password@ds151955.mlab.com:51955/recipes");
+
+var url = process.env.DATABASEURL || "mongodb://localhost/recipes";
+mongoose.connect(url, { useMongoClient: true });
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
@@ -108,8 +110,8 @@ app.put("/recipes/:id", function (req, res) {
     });
 });
 
-app.listen(3000, function () {
-    console.log('Server has started');
+app.listen(process.env.PORT || 3000, process.env.IP, function(){
+    console.log("Server is running");
 });
 
 function fake(count) {
