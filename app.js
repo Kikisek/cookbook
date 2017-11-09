@@ -9,7 +9,7 @@ var methodOverride = require("method-override");
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-var url = process.env.DATABASEURL || "mongodb://localhost/recipes";
+var url = process.env.DBURL || "mongodb://localhost/recipes";
 mongoose.connect(url, { useMongoClient: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));
