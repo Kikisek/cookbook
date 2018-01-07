@@ -4,6 +4,9 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var bodyParser = require('body-parser');
 // var faker = require("faker");
+var passport = require("passport");
+var LocalStrategy = require("passport-local");
+var passportLocalMongoose = require("passport-local-mongoose");
 var methodOverride = require("method-override");
 
 app.set("view engine", "ejs");
@@ -15,7 +18,16 @@ mongoose.connect(url, { useMongoClient: true });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-var recipeSchema = new Schema({
+var UserSchema = new Schema({
+    username: { type: String, unique: true, required: true },
+    password: String,
+    email: String,
+    admin: { type: Boolean, default: false }
+})
+
+UserSchema.plugin(passportLocalMongoose);
+
+var RecipeSchema = new Schema({
     title: String,
     image: String,
     ingredients: [
@@ -31,7 +43,25 @@ var recipeSchema = new Schema({
     cookingTime: Number
 });
 
-var Recipe = mongoose.model('Recipe', recipeSchema);
+var User = mongoose.model('User', UserSchema);
+var Recipe = mongoose.model('Recipe', RecipeSchema);
+
+// PASSPORT CONFIG
+app.use(require("express-session")({
+    secret: "Recepty!",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+})
 
 function reshapeIngredients(ingredients) {
     var modifiedIngredients = [];
@@ -50,6 +80,51 @@ app.get("/", function (req, res) {
     res.redirect("/recipes");
 });
 
+//show register form
+app.get("/register", function (req, res) {
+    res.render("register");
+})
+
+//handle sign up logic
+app.post("/register", function (req, res) {
+    var newUser = new User({
+        username: req.body.username,
+    });
+    //admin check
+    if (req.body.adminCode === "adm1nc0d3") {
+        newUser.admin = true;
+    }
+    User.register(newUser, req.body.password, function (err, user) {
+        if (err) {
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, function () {
+            console.log("Successfully registered");
+            res.redirect("/recipes");
+        });
+    });
+});
+
+//show login form
+app.get("/login", function (req, res) {
+    res.render("login")
+})
+
+//handle login logic
+app.post("/login", passport.authenticate("local",
+    {
+        successRedirect: "/recipes",
+        failureRedirect: "/login"
+    }), function (req, res) {
+});
+
+//logout
+app.get("/logout", function (req, res) {
+    req.logout();
+    res.redirect("/recipes");
+})
+
 app.get("/recipes", function (req, res) {
     Recipe.find({}, function (err, recipes) {
         if (err) {
@@ -61,10 +136,12 @@ app.get("/recipes", function (req, res) {
     // res.render("allRecipes", {recipes: fake(20)});
 });
 
+//create new recipe form
 app.get("/recipes/new", function (req, res) {
     res.render("edit", { edit: false });
 });
 
+//add new recipe
 app.post("/recipes", function (req, res) {
     req.body.ingredients = reshapeIngredients(req.body.ingredients);
     Recipe.create(req.body, function (err, recipe) {
@@ -76,6 +153,7 @@ app.post("/recipes", function (req, res) {
     });
 });
 
+//show individual recipe
 app.get("/recipes/:id", function (req, res) {
     Recipe.findById(req.params.id, function (err, foundRecipe) {
         if (err) {
@@ -86,6 +164,7 @@ app.get("/recipes/:id", function (req, res) {
     });
 });
 
+//edit recipe form
 app.get("/recipes/:id/edit", function (req, res) {
     Recipe.findById(req.params.id, function (err, foundRecipe) {
         if (err) {
@@ -99,6 +178,7 @@ app.get("/recipes/:id/edit", function (req, res) {
     });
 });
 
+//edit recipe route
 app.put("/recipes/:id", function (req, res) {
     req.body.ingredients = reshapeIngredients(req.body.ingredients);
     Recipe.findByIdAndUpdate(req.params.id, req.body, function (err, updatedRecipe) {
@@ -110,7 +190,9 @@ app.put("/recipes/:id", function (req, res) {
     });
 });
 
-app.listen(process.env.PORT || 3000, process.env.IP, function(){
+//SPUSTIT DATABAZI: mongod
+//SPUSTIT SERVER: node app.js or npm start
+app.listen(process.env.PORT || 3000, process.env.IP, function () {
     console.log("Server is running");
 });
 

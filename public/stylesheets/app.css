@@ -78,6 +78,10 @@ ul.card-text {
     width: 65%;
 }
 
+.logged-in-as {
+    border: none;
+}
+
 #new-form-container {
     width: 60%;
 }

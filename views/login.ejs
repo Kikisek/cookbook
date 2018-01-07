@@ -1,0 +1,21 @@
+<% include ./partials/header %>
+
+<div class="container mt-5" style="width: 40%">
+    <h1 class="text-center">Login</h1>
+    <form action="/login" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" id="username" type="text" name="username">
+        </div>
+        <div class="form-group">
+            <label for="psw">Password</label>
+            <input class="form-control" id="psw" type="password" name="password">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-lg btn-regular btn-block">Login!</button>
+        </div>
+    </form>
+    <a class="text-center d-block" href="/recipes">Back</a>
+</div>
+
+<% include ./partials/footer %>
