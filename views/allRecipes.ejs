@@ -2,12 +2,14 @@
 
     <div class="jumbotron jumbotron-fluid py-4">
         <div class="container">
-            <h1 class="display-5">CookBook</h1>
+            <h1 class="display-5">Kiki's CookBook</h1>
             <p class="lead">This is a simple site where I can easily navigate through my personal collection of recipes.</p>
             <hr class="my-3">
             <p>The work is still in progress, additional features will be added shortly!</p>
             <div class="d-flex">
+                <% if (currentUser) { %>
                 <a class="btn btn-regular btn-md" href="/recipes/new" role="button">Add New Recipe</a>
+                <% } %>
                 <% if (!currentUser) { %>
                     <a class="btn btn-regular btn-md mr-2 ml-auto" href="/login" role="button">Sign In</a>
                     <a class="btn btn-regular btn-md" href="/register" role="button">Register</a>
