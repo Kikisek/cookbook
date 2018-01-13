@@ -26,10 +26,12 @@
             </div>
         <% }; %>
     </div>
+    <p><em>Submitted By <%= recipe.author.username || "Anonymous" %></p></em>
+    <% if (currentUser && recipe.author.id.equals(currentUser._id) || currentUser && currentUser.admin) { %>
         <a href="/recipes/<%= recipe._id %>/edit" class="btn btn-regular">Edit</a>
-        <a href="/recipes" class="btn btn-regular">Back</a>
         <a href="/recipes" class="btn btn-regular">Delete</a>
-    
+    <% } %>
+    <a href="/recipes" class="btn btn-regular">Back</a>
 </div>
 
 <% include ./partials/footer.ejs %>

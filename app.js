@@ -3,7 +3,6 @@ var app = express();
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var bodyParser = require('body-parser');
-// var faker = require("faker");
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
@@ -40,7 +39,14 @@ var RecipeSchema = new Schema({
     directions: [String],
     servings: Number,
     prepTime: Number,
-    cookingTime: Number
+    cookingTime: Number,
+    author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            rel: "User"
+        },
+        username: String
+    }
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -80,6 +86,36 @@ app.get("/", function (req, res) {
     res.redirect("/recipes");
 });
 
+
+//MIDDLEWARE
+function checkAuthForRecipe (req, res, next) {
+    //is user logged in?
+    if (req.isAuthenticated()) {
+        Recipe.findById(req.params.id, function (err, foundRecipe) {
+            if (err || !foundRecipe) {
+                res.redirect("back");
+            } else {
+                //does user own the recipe?
+                if (foundRecipe.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        })
+    }
+}
+
+let isLoggedIn = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect("/login");
+    }
+}
+
+
+//ROUTES
 //show register form
 app.get("/register", function (req, res) {
     res.render("register");
@@ -125,6 +161,7 @@ app.get("/logout", function (req, res) {
     res.redirect("/recipes");
 })
 
+//root
 app.get("/recipes", function (req, res) {
     Recipe.find({}, function (err, recipes) {
         if (err) {
@@ -133,18 +170,29 @@ app.get("/recipes", function (req, res) {
             res.render("allRecipes", { recipes: recipes });
         }
     })
-    // res.render("allRecipes", {recipes: fake(20)});
 });
 
-//create new recipe form
-app.get("/recipes/new", function (req, res) {
+//add recipe form
+app.get("/recipes/new", isLoggedIn, function (req, res) {
     res.render("edit", { edit: false });
 });
 
 //add new recipe
-app.post("/recipes", function (req, res) {
-    req.body.ingredients = reshapeIngredients(req.body.ingredients);
-    Recipe.create(req.body, function (err, recipe) {
+app.post("/recipes", isLoggedIn, function (req, res) {
+    let newRecipe = {
+        title: req.body.title,
+        image: req.body.image,
+        ingredients: reshapeIngredients(req.body.ingredients),
+        directions: req.body.directions,
+        servings: req.body.servings,
+        prepTime: req.body.prepTime,
+        cookingTime: req.body.cookingTime,
+        author: {
+            id: req.user._id,
+            username: req.user.username
+        }
+    }
+    Recipe.create(newRecipe, function (err, recipe) {
         if (err) {
             console.log(err);
         } else {
@@ -165,7 +213,7 @@ app.get("/recipes/:id", function (req, res) {
 });
 
 //edit recipe form
-app.get("/recipes/:id/edit", function (req, res) {
+app.get("/recipes/:id/edit", checkAuthForRecipe, function (req, res) {
     Recipe.findById(req.params.id, function (err, foundRecipe) {
         if (err) {
             console.log(err);
@@ -179,7 +227,7 @@ app.get("/recipes/:id/edit", function (req, res) {
 });
 
 //edit recipe route
-app.put("/recipes/:id", function (req, res) {
+app.put("/recipes/:id",checkAuthForRecipe, function (req, res) {
     req.body.ingredients = reshapeIngredients(req.body.ingredients);
     Recipe.findByIdAndUpdate(req.params.id, req.body, function (err, updatedRecipe) {
         if (err) {
@@ -195,34 +243,3 @@ app.put("/recipes/:id", function (req, res) {
 app.listen(process.env.PORT || 3000, process.env.IP, function () {
     console.log("Server is running");
 });
-
-function fake(count) {
-    var units = ["g", "lb", "ml", "oz", "fl oz", "cup", "tbsp", "tsp", "pcs"];
-    var fakeData = [];
-    for (var i = 0; i <= count; i++) {
-        fakeData.push({
-            title: faker.random.words(),
-            image: faker.image.food() + "?t=" + Date.now(),
-            ingredients: [{
-                name: faker.random.word(),
-                amount: faker.random.number(),
-                unit: units[Math.floor(Math.random() * units.length)]
-            },
-            {
-                name: faker.random.word(),
-                amount: faker.random.number(),
-                unit: units[Math.floor(Math.random() * units.length)]
-            },
-            {
-                name: faker.random.word(),
-                amount: faker.random.number(),
-                unit: units[Math.floor(Math.random() * units.length)]
-            }],
-            directions: faker.lorem.paragraphs(),
-            servings: faker.random.number(),
-            prepTime: faker.random.number(),
-            cookingTime: faker.random.number()
-        });
-    }
-    return fakeData;
-}
