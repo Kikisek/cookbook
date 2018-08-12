@@ -227,13 +227,25 @@ app.get("/recipes/:id/edit", checkAuthForRecipe, function (req, res) {
 });
 
 //edit recipe route
-app.put("/recipes/:id",checkAuthForRecipe, function (req, res) {
+app.put("/recipes/:id", checkAuthForRecipe, function (req, res) {
+    console.log('editing')
     req.body.ingredients = reshapeIngredients(req.body.ingredients);
     Recipe.findByIdAndUpdate(req.params.id, req.body, function (err, updatedRecipe) {
         if (err) {
             res.send("error" + err);
         } else {
             res.redirect("/recipes/" + req.params.id);
+        }
+    });
+});
+
+//remove recipe
+app.delete("/recipes/:id", checkAuthForRecipe, function (req, res) {
+    Recipe.findByIdAndRemove(req.params.id, function (err, removedRecipe) {
+        if (err) {
+            res.send("error", + err);
+        } else {
+            res.redirect("/recipes");
         }
     });
 });

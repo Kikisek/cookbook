@@ -82,6 +82,10 @@ ul.card-text {
     border: none;
 }
 
+.delete-button {
+    display: inline;
+}
+
 #new-form-container {
     width: 60%;
 }
