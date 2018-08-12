@@ -71,13 +71,23 @@ app.use(function (req, res, next) {
 
 function reshapeIngredients(ingredients) {
     var modifiedIngredients = [];
-    for (var i = 0; i < ingredients.name.length; i++) {
-        var obj = {
-            name: ingredients.name[i],
-            amount: ingredients.amount[i],
-            unit: ingredients.unit[i],
-        };
-        modifiedIngredients.push(obj);
+    if (Array.isArray(ingredients.name)) {
+        for (var i = 0; i < ingredients.name.length; i++) {
+            var obj = {
+                name: ingredients.name[i],
+                amount: ingredients.amount[i],
+                unit: ingredients.unit[i],
+            };
+            modifiedIngredients.push(obj);
+        }
+    } else {
+        modifiedIngredients.push(
+            {
+                name: ingredients.name,
+                amount: ingredients.amount,
+                unit: ingredients.unit
+            }
+        );
     }
     return modifiedIngredients;
 };
@@ -228,7 +238,6 @@ app.get("/recipes/:id/edit", checkAuthForRecipe, function (req, res) {
 
 //edit recipe route
 app.put("/recipes/:id", checkAuthForRecipe, function (req, res) {
-    console.log('editing')
     req.body.ingredients = reshapeIngredients(req.body.ingredients);
     Recipe.findByIdAndUpdate(req.params.id, req.body, function (err, updatedRecipe) {
         if (err) {
