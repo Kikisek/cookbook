@@ -29,11 +29,37 @@
     <p><em>Submitted By <%= recipe.author.username || "Anonymous" %></p></em>
     <% if (currentUser && recipe.author.id.equals(currentUser._id) || currentUser && currentUser.admin) { %>
         <a href="/recipes/<%= recipe._id %>/edit" class="btn btn-regular">Edit</a>
-        <form class="delete-button" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
-            <input type="submit" class="btn btn-regular" value="Delete"/>
-        </form>
+        <button type="button" class="btn btn-regular" data-toggle="modal" data-target="#deleteModal">
+            Delete
+        </button>
+        
     <% } %>
     <a href="/recipes" class="btn btn-regular">Back</a>
+  
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete <%= recipe.title %></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Do you really want to remove the recipe for <%= recipe.title %>?
+          </div>
+          <div class="modal-footer">
+            <form class="delete-button" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+                <input type="submit" class="btn btn-danger" value="Delete"/>
+            </form>
+            <button type="button" class="btn btn-regular" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
 </div>
 
 <% include ./partials/footer.ejs %>
