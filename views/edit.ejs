@@ -30,7 +30,7 @@
         </div>
     </div>
     <!-- FILL IN THE INGREDIENTS -->
-    <% var ingredients = edit ? recipe.ingredients : [{name: '', amount: '', unit: ''}] %>
+    <% var ingredients = (edit && recipe.ingredients.length > 0) ? recipe.ingredients : [{name: '', amount: '', unit: ''}] %>
     <% for (ingredient of ingredients) { %>
     <div class="form-row ingredients-form">
         <!-- NAME -->
