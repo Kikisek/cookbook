@@ -106,7 +106,7 @@ function checkAuthForRecipe (req, res, next) {
                 res.redirect("back");
             } else {
                 //does user own the recipe?
-                if (foundRecipe.author.id.equals(req.user._id)) {
+                if (foundRecipe.author.id.equals(req.user._id) || req.user.admin) {
                     next();
                 } else {
                     res.redirect("back");
