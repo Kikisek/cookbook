@@ -9,13 +9,20 @@
         <div class="col col-md-6 col-sm-12 mt-auto">
             <p class="prep-times"><span class="font-weight-bold">Preparation:</span><span class="float-right"><%= recipe.prepTime %> min</span></p>
             <p class="prep-times"><span class="font-weight-bold">Cooking:</span><span class="float-right"><%= recipe.cookingTime %> min</span></p>
-            <p class="mb-0 prep-times"><span class="font-weight-bold">Number of Servings:</span><span class="float-right"><input type="number" min="0" id="no-of-servings" value="<%= recipe.servings %>"></span></p>
+            <div class="mb-0 prep-times">
+                <span class="font-weight-bold">Servings:</span>
+                <span class="float-right">
+                    <form id="no-of-servings">
+                        <input type="number" min="1" id="no-of-servings-input" value="<%= recipe.servings %>">
+                    </form>
+                </span>
+            </div>
         </div>
     </div>
     <hr>
     <div class="ingredients">
         <% recipe.ingredients.forEach (function(ingredient) { %>
-            <p class="ingredient mb-1"><span class="font-weight-bold"><%= ingredient.amount %></span><%= " " + ingredient.unit + " " + ingredient.name %></p>
+            <p class="ingredient mb-1"><span class="font-weight-bold original-no-of-ingredients"><%= ingredient.amount %></span><%= " " + ingredient.unit + " " + ingredient.name %></p>
         <% }); %>
     </div>
     <hr>

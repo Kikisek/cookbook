@@ -81,7 +81,7 @@
         <!-- SERVINGS -->
         <div class="form-group col-md-4">
             <label class="form-control-label" for="servings">Number of servings</label>
-            <input type="number" class="form-control" id="servings" name="servings" value="<%= edit ? recipe.servings : 0 %>" placeholder="4">
+            <input type="number" min="1" class="form-control" id="servings" name="servings" value="<%= edit ? recipe.servings : 1 %>" placeholder="4">
         </div>
         <!-- PREPTIME -->
         <div class="form-group col-md-4">

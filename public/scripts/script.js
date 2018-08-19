@@ -30,4 +30,15 @@ $(document).ready(function () {
             $(this).siblings(".chevron").children("i").toggleClass("fa-chevron-up");
         });
     });
+    const arrayOfOriginalIngredients = [];
+    jQuery.each($(".original-no-of-ingredients"), (index, value) => {arrayOfOriginalIngredients.push(value.innerHTML)});
+    const originalNoOfServings = $("#no-of-servings-input").val();
+    $("#no-of-servings").bind("input", function () {
+        let noOfServings = $("#no-of-servings-input").val();
+        let calculatedServings = [];
+        arrayOfOriginalIngredients.forEach(value => {
+            calculatedServings.push(Math.round(100 * ((value / originalNoOfServings) * noOfServings)) / 100)
+        })
+        jQuery.each($(".original-no-of-ingredients"), (index, value) => {value.innerHTML = calculatedServings[index]});
+    });
 });
