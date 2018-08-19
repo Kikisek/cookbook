@@ -37,7 +37,9 @@ $(document).ready(function () {
         let noOfServings = $("#no-of-servings-input").val();
         let calculatedServings = [];
         arrayOfOriginalIngredients.forEach(value => {
-            calculatedServings.push(Math.round(100 * ((value / originalNoOfServings) * noOfServings)) / 100)
+            let calculatedValue = Math.round(100 * ((value / originalNoOfServings) * noOfServings)) / 100;
+            calculatedValue = calculatedValue === 0 ? "" : calculatedValue;
+            calculatedServings.push(calculatedValue);
         })
         jQuery.each($(".original-no-of-ingredients"), (index, value) => {value.innerHTML = calculatedServings[index]});
     });
