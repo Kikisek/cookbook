@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="container" id="recipes-card-container">
+    <main class="container" id="recipes-card-container">
         <div class="grid card-columns">
             <% recipes.forEach(function(recipe){ %>
                 <div class="card">
@@ -32,9 +32,9 @@
                     </a>
                     <div class="card-body">
                         <a href="/recipes/<%= recipe._id %>">
-                            <h4 class="card-title">
+                            <h2 class="card-title">
                                 <%= recipe.title %>
-                            </h4>
+                            </h2>
                         </a>
                         <ul class="card-text">
                             <% for (var i = 0; i < recipe.ingredients.length; i++) { %>
@@ -56,6 +56,6 @@
                 </div>
                 <% }); %>
         </div>
-    </div>
+    </main>
 
     <% include ./partials/footer %>

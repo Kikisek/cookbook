@@ -1,7 +1,7 @@
 <% include ./partials/header.ejs %>
 
-<div class="container" id="show-recipe-container">
-    <h3 id="recipe-title"><%= recipe.title %></h3>
+<main class="container" id="show-recipe-container">
+    <h1 id="recipe-title"><%= recipe.title %></h1>
     <div class="row" id="basic-info">
         <div class="col col-md-6 col-sm-12">
             <img class="recipe-image" src="<%= recipe.image %>" alt="">
@@ -65,8 +65,6 @@
         </div>
       </div>
     </div>
-  
-
-</div>
+</main>
 
 <% include ./partials/footer.ejs %>
