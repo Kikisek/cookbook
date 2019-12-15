@@ -28,7 +28,7 @@
             <% recipes.forEach(function(recipe){ %>
                 <div class="card">
                     <a href="/recipes/<%= recipe._id %>">
-                        <img class="card-img-top" src="<%= recipe.image %>">
+                        <img class="card-img-top" src="<%= recipe.image %>" alt="<%= recipe.title%>">
                     </a>
                     <div class="card-body">
                         <a href="/recipes/<%= recipe._id %>">

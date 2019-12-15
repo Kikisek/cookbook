@@ -4,13 +4,13 @@
     <h3 id="recipe-title"><%= recipe.title %></h3>
     <div class="row" id="basic-info">
         <div class="col col-md-6 col-sm-12">
-            <img class="recipe-image" src="<%= recipe.image %>">
+            <img class="recipe-image" src="<%= recipe.image %>" alt="">
         </div>
         <div class="col col-md-6 col-sm-12 mt-auto">
             <p class="prep-times"><span class="font-weight-bold">Preparation:</span><span class="float-right"><%= recipe.prepTime %> min</span></p>
             <p class="prep-times"><span class="font-weight-bold">Cooking:</span><span class="float-right"><%= recipe.cookingTime %> min</span></p>
             <div class="mb-0 prep-times">
-                <span class="font-weight-bold">Servings:</span>
+                <label for="no-of-servings-input" class="font-weight-bold">Servings:</label>
                 <span class="float-right">
                     <form id="no-of-servings">
                         <input type="number" min="1" id="no-of-servings-input" value="<%= recipe.servings %>">
